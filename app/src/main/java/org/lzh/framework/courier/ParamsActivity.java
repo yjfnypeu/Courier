@@ -9,11 +9,10 @@ import com.lzh.courier.annoapi.Params;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
+// 含带参数的跳转。
 @Params(fields = {
-        @Field(name = "username",type = String.class,doc = "用户名"),
+        @Field(name = "username",type = String.class,doc = "用户名",defValue = "admin"),
         @Field(name = "password",type = String.class,doc = "密码"),
-        @Field(name = "test",type = boolean[].class,doc = "测试")
 })
 public class ParamsActivity extends Activity {
 

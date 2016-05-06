@@ -23,13 +23,19 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+
+
+//task javadoc(type: Javadoc) {
+//    options.encoding = "utf-8"
+//}
+
 //添加
 ext {
     userOrg = 'yjfnypeu'
-    groupId = 'org.lzh.compiler.lib'
+    groupId = 'org.lzh.compiler.courier'
     uploadName = 'Courier'
     publishVersion = '0.1'
     desc = 'a set of processor tools,current is only for pass data to activity or fragment'
-    website = 'https://github.com/yjfnypeu/ProcessorTools'
+    website = 'https://github.com/yjfnypeu/Courier'
     licences = ['Apache-2.0']
 }

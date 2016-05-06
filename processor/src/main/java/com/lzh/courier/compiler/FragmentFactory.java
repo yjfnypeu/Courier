@@ -38,6 +38,8 @@ public class FragmentFactory extends FileFactory {
             typeBuilder.addType(generateRequestData());
             // create get data method
             typeBuilder.addMethod(createGetDataMethod());
+            // add get ArgsData
+            typeBuilder.addMethod(createGetArgsDataMethod());
         }
         // create filed
         createFields(typeBuilder);

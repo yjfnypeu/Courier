@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 @Params(fields = {
         @Field(name = "username", type = String.class)
 })
-public abstract class ParentActivity extends Activity {
+public class ParentActivity extends Activity {
 
     @Bind(R.id.username)
     Button username;

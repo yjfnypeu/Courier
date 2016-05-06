@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 @Params(fields = {
         @Field(name = "username", type = String.class, doc = "用户名")
 })
-public abstract class TestFragment extends Fragment {
+public class TestFragment extends Fragment {
 
     @Bind(R.id.username)
     Button username;

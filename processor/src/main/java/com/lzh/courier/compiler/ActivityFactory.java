@@ -47,6 +47,9 @@ public class ActivityFactory extends FileFactory {
             typeBuilder.addType(generateRequestData());
             // add get request data method
             typeBuilder.addMethod(createGetDataMethod());
+            // add get ArgsData
+            typeBuilder.addMethod(createGetArgsDataMethod());
+
         }
         // create private constructor method
         typeBuilder.addMethod(createPrivateConstructor());

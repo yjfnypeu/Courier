@@ -13,7 +13,7 @@ import com.lzh.courier.annoapi.Params;
 @Params(fields = {
         @Field(name = "password", type = String.class, doc = "用户密码")
 })
-public class SubFragment extends MiddleFragment {
+public class SubFragment extends TestFragment {
     public static final String TAG = SubFragment.class.getCanonicalName();
     SubFragment_Builder.ArgsData requestData;
 

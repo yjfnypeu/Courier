@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProcessorTools</string>
+    <string name="app_name">Courier</string>
     <string name="toEmptyParams">跳转到空传参的页面</string>
     <string name="toParamsActivity">跳转到传参的页面</string>
     <string name="toParentActivity">跳转到父Activity</string>
@@ -7,4 +7,5 @@
     <string name="noParams">无传参</string>
     <string name="toParentFragment">展示父Fragment</string>
     <string name="toSubFragment">展示子Fragment</string>
+    <string name="toMultiTypeActivity">跳转到多类型传参页面</string>
 </resources>

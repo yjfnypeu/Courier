@@ -29,6 +29,5 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="api" exported="" />
     <orderEntry type="library" exported="" name="javapoet-1.7.0" level="project" />
-    <orderEntry type="library" exported="" name="processor.processor" level="project" />
   </component>
 </module>

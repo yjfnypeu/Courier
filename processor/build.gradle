@@ -14,6 +14,16 @@ tasks.withType(Compile) {
     options.encoding = "UTF-8"
 }
 
+javadoc {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true // 支持author标记
+        version true // 支持version标记
+        links "http://docs.oracle.com/javase/7/docs/api"
+    }
+}
+
 //添加
 publish {
     artifactId = 'courier-compiler'

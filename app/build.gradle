@@ -20,8 +20,10 @@ android {
 }
 
 dependencies {
-    compile project(':api')
-    apt project(':processor')
+    //    compile project(':api')
+    //    apt project(':processor')
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'org.lzh.compiler.courier:courier-api:0.1'
+    apt 'org.lzh.compiler.courier:courier-compiler:0.1'
     compile 'com.android.support:support-v4:23.1.1'
 }

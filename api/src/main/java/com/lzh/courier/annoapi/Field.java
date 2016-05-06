@@ -19,17 +19,28 @@ public @interface Field {
     String name();
 
     /**
-     * field type
+     * field type,to indicate the real type you need pass.this type will used with {fieldType}
      */
     Class type();
 
     /**
-     * field javadoc
+     * field javadoc,to generate java doc in java code
      */
     String doc() default "";
 
+    /**
+     * default value.to generate this field default value in ArgsData class
+     */
     String defValue() default "";
 
+    /**
+     * associate with {type},to indicate the real type you want:<br>
+     *     rules:<br>
+     *         Serializable + type : {type}<br>
+     *         list + type : List<type><br>
+     *         set + type : Set<type><br>
+     *         array + type : type[]
+     */
     FieldType fieldType() default FieldType.Serializable;
 
 }

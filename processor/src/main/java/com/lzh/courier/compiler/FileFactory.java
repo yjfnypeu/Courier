@@ -29,6 +29,7 @@ public abstract class FileFactory {
     final static String PARENT_CLASS_FIELD_NAME = "parent";
     final static String TAG_FIELD = "TAG";
     final static String CREATE_METHOD = "create";
+    private static final String GET_ARGSDATA_METHOD_NAME = "getArgsData";
 
     String pkgName;
     ElementParser parser;
@@ -119,6 +120,15 @@ public abstract class FileFactory {
         return builder.build();
     }
 
+    MethodSpec createGetArgsDataMethod() {
+        MethodSpec.Builder builder = MethodSpec.methodBuilder(GET_ARGSDATA_METHOD_NAME)
+                .addModifiers(Modifier.PUBLIC)
+                .returns(getTypeName(REQUEST_DATA_CLASS))
+                .addJavadoc("get args you has already set")
+                .addStatement("return $L", REQUEST_DATA_FIELD_NAME);
+        return builder.build();
+    }
+
     MethodSpec createSetRequestBuilder(FieldData data) {
         String setMethodName = StringUtils.getSetMethodName(data.getName());
         return MethodSpec.methodBuilder(setMethodName)
@@ -170,7 +180,7 @@ public abstract class FileFactory {
         List<FieldData> fieldList = parser.getFieldList();
         for (int i = 0; i < fieldList.size(); i++) {
             FieldData data = fieldList.get(i);
-            typeBuilder.addMethod(createSetMethod(data));
+            createSetMethod(data, typeBuilder);
         }
 
         if (generateParentClassName == null) {
@@ -195,15 +205,30 @@ public abstract class FileFactory {
                 .build();
     }
 
-    MethodSpec createSetMethod(FieldData data) {
+    void createSetMethod(FieldData data,TypeSpec.Builder typeBuilder) {
         String setMethodName = StringUtils.getSetMethodName(data.getName());
-        return MethodSpec.methodBuilder(setMethodName)
+        TypeName realType = getTypeName(data.getFieldType(), data.getType());
+        MethodSpec setMethod = MethodSpec.methodBuilder(setMethodName)
                 .addModifiers(Modifier.PUBLIC)
                 .returns(generateClassName)
-                .addParameter(getTypeName(data.getFieldType(), data.getType()), data.getName())
-                .addStatement("this.$L.$L($L)",REQUEST_DATA_FIELD_NAME,setMethodName,data.getName())
+                .addParameter(realType, data.getName())
+                .addStatement("this.$L.$L($L)", REQUEST_DATA_FIELD_NAME, setMethodName, data.getName())
                 .addStatement("return this")
                 .addJavadoc(data.getDoc())
                 .build();
+        typeBuilder.addMethod(setMethod);
+
+        String addMethodName = StringUtils.getAddMethodName(data.getName());
+
+        if (data.getFieldType() == FieldType.list) {
+            // create add method
+            MethodSpec.Builder addMethod = MethodSpec.methodBuilder(addMethodName)
+                    .addModifiers(Modifier.PUBLIC)
+                    .returns(generateClassName)
+                    .addParameter(data.getType(),data.getName())
+                    .addStatement("$T argument = this.$L.get$L()",realType,REQUEST_DATA_FIELD_NAME,data.getName());
+        }
     }
+
+
 }

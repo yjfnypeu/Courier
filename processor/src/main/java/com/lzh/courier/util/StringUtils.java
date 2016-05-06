@@ -67,4 +67,10 @@ public class StringUtils {
 		
 	}
 
+	public static String getAddMethodName(String name) {
+		checkName(name);
+
+		StringBuffer sb = getUpperMethod(name);
+		return "add" + sb.toString();
+	}
 }

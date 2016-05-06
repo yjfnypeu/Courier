@@ -13,9 +13,16 @@ tasks.withType(Compile) {
     options.encoding = "UTF-8"
 }
 
-//tasks.withType (JavaCompile){
-//    options.encoding = "utf-8"
-//}
+javadoc {
+    options{
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        links "http://docs.oracle.com/javase/7/docs/api"
+
+    }
+}
 
 //添加
 publish {
