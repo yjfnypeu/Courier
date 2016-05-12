@@ -117,6 +117,12 @@ public class ElementParser {
             if (curElement == null) {
                 return parentFieldList;
             }
+
+            Params params = curElement.getAnnotation(Params.class);
+            if (params != null && !params.inherited() && !checkIsSubClass(ACT_NAME)) {
+                break;
+            }
+
             List<FieldData> parentList = parseField(curElement);
             if (parentList.size() > 0 && parentElement == null)  {
                 parentElement = curElement;

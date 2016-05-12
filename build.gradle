@@ -34,7 +34,7 @@ ext {
     userOrg = 'yjfnypeu'
     groupId = 'org.lzh.compiler.courier'
     uploadName = 'Courier'
-    publishVersion = '0.1'
+    publishVersion = '0.2'
     desc = 'a set of processor tools,current is only for pass data to activity or fragment'
     website = 'https://github.com/yjfnypeu/Courier'
     licences = ['Apache-2.0']

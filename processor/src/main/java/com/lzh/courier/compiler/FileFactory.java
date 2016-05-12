@@ -113,7 +113,8 @@ public abstract class FileFactory {
                 .addJavadoc(data.getDoc());
         if (!StringUtils.isEmpty(data.getDefValue())) {
             builder.initializer(
-                    (data.getType().equals(TypeName.get(String.class)) ? "$S" : "$L"),
+                    ((data.getType().equals(TypeName.get(String.class))
+                        || data.getType().equals(TypeName.get(CharSequence.class))) ? "$S" : "$L"),
                     data.getDefValue());
         }
 
@@ -197,11 +198,11 @@ public abstract class FileFactory {
         String setMethodName = StringUtils.getSetMethodName(data.getName());
         return MethodSpec.methodBuilder(setMethodName)
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(getTypeName(data.getFieldType(),data.getType()),data.getName())
+                .addParameter(getTypeName(data.getFieldType(), data.getType()), data.getName())
                 .returns(generateClassName)
-                .addStatement("$L.$L($L)",PARENT_CLASS_FIELD_NAME,setMethodName,data.getName())
+                .addStatement("$L.$L($L)", PARENT_CLASS_FIELD_NAME, setMethodName, data.getName())
                 .addStatement("return this")
-                .addJavadoc(data.getDoc())
+                .addJavadoc("parent argument:" + data.getDoc())
                 .build();
     }
 

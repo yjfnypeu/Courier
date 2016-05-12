@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
 
     @OnClick(R.id.toSubFragment)
     void toSubFragment () {
-        SubFragment build = SubFragment_Builder.create().setUsername("SubFragment pass : username")
+        SubFragment build = SubFragment_Builder.create()
                 .setPassword("SubFragment pass : password")
                 .build();
         getFragmentManager().beginTransaction()
