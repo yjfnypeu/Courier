@@ -19,8 +19,8 @@ apply plugin: 'com.neenbedankt.android-apt'
 ```
 dependencies {
 	...
-    compile 'org.lzh.compiler.lib:courier-api:0.1'
-    apt 'org.lzh.compiler.lib:courier-compiler:0.1'
+    compile 'org.lzh.compiler.courier:courier-api:0.1'
+    apt 'org.lzh.compiler.courier:courier-compiler:0.1'
 }
 ```
 
