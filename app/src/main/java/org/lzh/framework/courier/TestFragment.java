@@ -17,9 +17,9 @@ import butterknife.ButterKnife;
  * @author Administrator
  */
 @Params(
-        inherited = false,
+//        inherited = false,
         fields = {
-        @Field(name = "username", type = CharSequence.class, defValue = "username",doc = "用户名")
+        @Field(name = "username", type = CharSequence.class, defValue = "\"username\"",doc = "用户名")
 }
 )
 public class TestFragment extends Fragment {
