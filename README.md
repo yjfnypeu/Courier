@@ -19,9 +19,16 @@ apply plugin: 'com.neenbedankt.android-apt'
 ```
 dependencies {
 	...
-    compile 'org.lzh.compiler.courier:courier-api:0.1'
-    apt 'org.lzh.compiler.courier:courier-compiler:0.1'
+    compile 'org.lzh.compiler.courier:courier-api:0.2'
+    apt 'org.lzh.compiler.courier:courier-compiler:0.2'
 }
+```
+**Update:**
+
+- 0.2
+
+```
+#对Params注解添加inherited属性。指定多层继承结构使用时。生成类是否继承父类参数
 ```
 
 具体使用姿势[csdn链接](http://blog.csdn.net/liu470368500/article/details/51142099)

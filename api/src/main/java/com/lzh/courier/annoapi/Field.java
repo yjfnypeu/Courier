@@ -34,7 +34,6 @@ public @interface Field {
     String defValue() default "";
 
     /**
-     * generic
      * associate with {type},to indicate the real type you want:<br>
      *     rules:<br>
      *         Serializable + type : {type}<br>
