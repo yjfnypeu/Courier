@@ -15,8 +15,14 @@ import javax.lang.model.element.Modifier;
  */
 public class ActivityFactory extends FileFactory {
 
+    /**
+     * The filed name of requestCode in generated XXXDispatcher class
+     */
     private final static String REQUEST_CODE_FIELD_NAME = "requestCode";
 
+    /**
+     * The method name of start in generated XXXDispatcher class
+     */
     private final static String START_METHOD = "start";
     private final static String CREATE_INTENT = "createIntent";
     private final static String GETDATA_METHOD = "getArguments";
@@ -27,7 +33,7 @@ public class ActivityFactory extends FileFactory {
     private final static String V4FRAGMENT_NAME = "android.support.v4.app.Fragment";
     private final static String INTENT_NAME = "android.content.Intent";
 
-    private final static String SUFFIX = "_Dispatcher";
+    private final static String SUFFIX = "Dispatcher";
 
     public ActivityFactory(ElementParser parser) {
         super(parser);
@@ -44,12 +50,15 @@ public class ActivityFactory extends FileFactory {
         addFields(typeBuilder);
         if (!isEmptyParams) {
             // add class RequestData
-            typeBuilder.addType(generateRequestData());
+            TypeSpec.Builder argsBuilder = generateRequestData();
+//            typeBuilder.addType(generateRequestData().build());
             // add get request data method
-            typeBuilder.addMethod(createGetDataMethod());
+            argsBuilder.addMethod(createGetDataMethod());
+
+            build(argsBuilder);
+
             // add get ArgsData
             typeBuilder.addMethod(createGetArgsDataMethod());
-
         }
         // create private constructor method
         typeBuilder.addMethod(createPrivateConstructor());
@@ -66,7 +75,6 @@ public class ActivityFactory extends FileFactory {
             addStartMethod(typeBuilder);
         }
 
-
         build(typeBuilder);
 
     }
@@ -81,6 +89,7 @@ public class ActivityFactory extends FileFactory {
                 .addModifiers(Modifier.PUBLIC,Modifier.STATIC)
                 .returns(getTypeName(REQUEST_DATA_CLASS))
                 .addParameter(intent, paramsName)
+                .addStatement("String TAG = $S",parser.getClzName())
                 .beginControlFlow("if (data == null || data.getSerializableExtra(TAG) == null)")
                 .addStatement("return new $T()", requestData)
                 .endControlFlow()
@@ -98,13 +107,17 @@ public class ActivityFactory extends FileFactory {
                 .addJavadoc("Create intent,put the instance of RequestData into it,and parent class request data")
                 .returns(getTypeName(INTENT_NAME))
                 .addParameter(getTypeName(CONTEXT_NAME), "context")
-                .addStatement("$T intent = new $T($L,$L.class)",
-                        intent, intent, "context", parser.getElement().getSimpleName());
+                .addParameter(TypeName.BOOLEAN,"addClass")
+                .addStatement("$T intent = new $T()",
+                        intent, intent);
 
         if (generateParentClassName != null) {
-            builder.addStatement("$T parentIntent = $L.$L(context)",intent,PARENT_CLASS_FIELD_NAME,CREATE_INTENT);
+            builder.addStatement("$T parentIntent = $L.$L(context,addClass)",intent,PARENT_CLASS_FIELD_NAME,CREATE_INTENT);
             builder.addStatement("intent.putExtras(parentIntent)");
         }
+        builder.beginControlFlow("if (addClass)")
+                .addStatement("intent.setClass($L,$L.class)","context", parser.getElement().getSimpleName())
+                .endControlFlow();
         if (!isEmptyParams) {
             builder.addStatement("intent.putExtra($L,$L)", TAG_FIELD, REQUEST_DATA_FIELD_NAME);
         }
@@ -155,7 +168,7 @@ public class ActivityFactory extends FileFactory {
                 .addModifiers(Modifier.PUBLIC)
                 .returns(generateClassName)
                 .addParameter(getTypeName(paramsType),paramsName)
-                .addStatement("$T intent = $L($L)",intent,CREATE_INTENT,context);
+                .addStatement("$T intent = $L($L,true)",intent,CREATE_INTENT,context);
     }
 
     private void addRequestCodeMethod(TypeSpec.Builder typeBuilder) {
@@ -170,20 +183,16 @@ public class ActivityFactory extends FileFactory {
         typeBuilder.addMethod(build);
     }
 
-
-
-
-
     private void addFields(TypeSpec.Builder typeBuilder) {
         // add tag
-        typeBuilder.addField(FieldSpec.builder(TypeName.get(String.class), TAG_FIELD, Modifier.PRIVATE, Modifier.FINAL, Modifier.STATIC)
-                .addJavadoc("The tag to pass data")
-                .initializer("$L.class.getCanonicalName()", parser.getClzName())
+        typeBuilder.addField(FieldSpec.builder(TypeName.get(String.class), TAG_FIELD, Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC)
+                .addJavadoc("The tag to put data into bundle")
+                .initializer("$S", parser.getClzName())
                 .build());
         if (!isEmptyParams) {
             // add RequestData filed
             typeBuilder.addField(FieldSpec.builder(getTypeName(REQUEST_DATA_CLASS), REQUEST_DATA_FIELD_NAME, Modifier.PRIVATE)
-                    .addJavadoc("The instance of RequestData that is the container of whole filed")
+                    .addJavadoc("The instance of {@link $L} that is the container of whole filed",REQUEST_DATA_CLASS)
                     .build());
         }
         // add request code field
@@ -203,7 +212,7 @@ public class ActivityFactory extends FileFactory {
         String clzName = parser.getClzName();
         clzName = clzName + SUFFIX;
         return TypeSpec.classBuilder(clzName)
-                .addJavadoc("This class is generated by annotation @Params")
+                .addJavadoc("This class is generated by annotation {@link com.lzh.courier.annoapi.Params}")
                 .addModifiers(Modifier.PUBLIC);
     }
 

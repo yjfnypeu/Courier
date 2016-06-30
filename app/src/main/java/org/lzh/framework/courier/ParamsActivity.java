@@ -27,7 +27,7 @@ public class ParamsActivity extends Activity {
         setContentView(R.layout.activity_params);
         ButterKnife.bind(this);
         // 获取传参
-        ParamsActivity_Dispatcher.ArgsData data = ParamsActivity_Dispatcher.getArguments(getIntent());
+        ParamsActivityArgsData data = ParamsActivityArgsData.getArguments(getIntent());
         username.setText(data.getUsername());
         password.setText(data.getPassword());
 

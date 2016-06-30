@@ -15,12 +15,12 @@ import com.lzh.courier.annoapi.Params;
 })
 public class SubFragment extends TestFragment {
     public static final String TAG = SubFragment.class.getCanonicalName();
-    SubFragment_Builder.ArgsData requestData;
+    SubFragmentArgsData requestData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestData = SubFragment_Builder.getArguments(this);
+        requestData = SubFragmentArgsData.getArguments(this);
     }
 
     @Override

@@ -14,7 +14,7 @@ import javax.lang.model.element.Modifier;
  * @author Administrator
  */
 public class FragmentFactory extends FileFactory {
-    static final String SUFFIX = "_Builder";
+    static final String SUFFIX = "Builder";
     static final String BUILD_METHOD = "build";
     static final String GET_DATA_METHOD = "getArguments";
     static final String CREATE_BUNDLE_NAME = "createBundle";
@@ -34,10 +34,12 @@ public class FragmentFactory extends FileFactory {
     void generateCode() throws IOException {
         TypeSpec.Builder typeBuilder = generateTypeBuilder();
         if (!isEmptyParams) {
-            // create inner data class method
-            typeBuilder.addType(generateRequestData());
+            // add class RequestData
+            TypeSpec.Builder argsBuilder = generateRequestData();
             // create get data method
-            typeBuilder.addMethod(createGetDataMethod());
+            argsBuilder.addMethod(createGetDataMethod());
+
+            build(argsBuilder);
             // add get ArgsData
             typeBuilder.addMethod(createGetArgsDataMethod());
         }
@@ -80,11 +82,20 @@ public class FragmentFactory extends FileFactory {
     private MethodSpec createGetDataMethod() {
         String params = "target";
         TypeName type = getTypeName(parser.getElement());
+        TypeName returnType = getTypeName(REQUEST_DATA_CLASS);
         return MethodSpec.methodBuilder(GET_DATA_METHOD)
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-                .returns(getTypeName(REQUEST_DATA_CLASS))
+                .addJavadoc("receive passed data,get data from bundle by tag : $L",TAG_FIELD)
+                .returns(returnType)
                 .addParameter(type, params)
-                .addStatement("return ($L)$L.getArguments().getSerializable($L)",REQUEST_DATA_CLASS,params,TAG_FIELD)
+                .addStatement("String TAG = $S",parser.getClzName())
+                .addStatement("$L data = $L.getArguments()",BUNDLE_NAME,params)
+                .beginControlFlow("if (data == null || data.getSerializable(TAG) == null)")
+                .addStatement("return new $T()", returnType)
+                .endControlFlow()
+                .beginControlFlow("else")
+                .addStatement("return ($T) data.getSerializable(TAG)", returnType)
+                .endControlFlow()
                 .build();
     }
 
@@ -106,7 +117,7 @@ public class FragmentFactory extends FileFactory {
     private void createFields(TypeSpec.Builder typeBuilder) {
         // add tag
         typeBuilder.addField(FieldSpec.builder(TypeName.get(String.class), TAG_FIELD, Modifier.PRIVATE, Modifier.FINAL, Modifier.STATIC)
-                .initializer("$L.class.getCanonicalName()", parser.getClzName()).build());
+                .initializer("$S", parser.getClzName()).build());
         if (!isEmptyParams) {
             // add RequestData filed
             typeBuilder.addField(FieldSpec.builder(getTypeName(REQUEST_DATA_CLASS), REQUEST_DATA_FIELD_NAME, Modifier.PUBLIC).build());

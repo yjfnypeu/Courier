@@ -24,7 +24,7 @@ import javax.lang.model.element.TypeElement;
  * @author Administrator
  */
 public abstract class FileFactory {
-    final static String REQUEST_DATA_CLASS = "ArgsData";
+    static String REQUEST_DATA_CLASS;
     final static String REQUEST_DATA_FIELD_NAME = "data";
     final static String PARENT_CLASS_FIELD_NAME = "parent";
     final static String TAG_FIELD = "TAG";
@@ -39,6 +39,7 @@ public abstract class FileFactory {
     boolean isAbstract = true;
 
     public FileFactory(ElementParser parser) {
+        REQUEST_DATA_CLASS = parser.getClzName() + "ArgsData";
         this.parser = parser;
         this.isEmptyParams = this.parser.getFieldList().size() == 0;
         this.isAbstract = this.parser.isAbstract();
@@ -81,9 +82,9 @@ public abstract class FileFactory {
     /**
      * create inner class RequestData,contains all of the field define by annotation @Field
      */
-    TypeSpec generateRequestData() {
+    TypeSpec.Builder generateRequestData() {
         TypeSpec.Builder builder = TypeSpec.classBuilder(REQUEST_DATA_CLASS)
-                .addModifiers(Modifier.STATIC, Modifier.PUBLIC)
+                .addModifiers(Modifier.PUBLIC)
                 .addJavadoc("inner class RequestData,contains all of the field define by annotation @Field")
                 .addSuperinterface(TypeName.get(Serializable.class));
         List<FieldData> fieldList = parser.getFieldList();
@@ -95,7 +96,7 @@ public abstract class FileFactory {
             builder.addMethod(createGetRequestBuilder(data));
         }
 
-        return builder.build();
+        return builder;
     }
 
     MethodSpec createGetRequestBuilder(FieldData data) {

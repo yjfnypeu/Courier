@@ -26,7 +26,7 @@ public class ParentActivity extends Activity {
         setContentView(R.layout.activity_parent);
         ButterKnife.bind(this);
 
-        ParentActivity_Dispatcher.ArgsData data = ParentActivity_Dispatcher.getArguments(getIntent());
+        ParentActivityArgsData data = ParentActivityArgsData.getArguments(getIntent());
         username.setText(data.getUsername());
 
     }

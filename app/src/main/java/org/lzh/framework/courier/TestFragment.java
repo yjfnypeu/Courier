@@ -29,12 +29,12 @@ public class TestFragment extends Fragment {
     @Bind(R.id.password)
     Button password;
 
-    TestFragment_Builder.ArgsData requestData;
+    TestFragmentArgsData requestData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestData = TestFragment_Builder.getArguments(this);
+        requestData = TestFragmentArgsData.getArguments(this);
     }
 
     @Override

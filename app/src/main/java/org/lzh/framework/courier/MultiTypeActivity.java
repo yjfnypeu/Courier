@@ -31,7 +31,7 @@ public class MultiTypeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi_type);
         ButterKnife.bind(this);
-        MultiTypeActivity_Dispatcher.ArgsData arguments = MultiTypeActivity_Dispatcher.getArguments(getIntent());
+        MultiTypeActivityArgsData arguments = MultiTypeActivityArgsData.getArguments(getIntent());
         StringBuffer buffer = new StringBuffer();
         buffer.append("admin:" + arguments.getAdmin())
                 .append("\n")

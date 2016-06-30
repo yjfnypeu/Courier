@@ -14,7 +14,7 @@ public class SubActivity extends ParentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SubActivity_Dispatcher.ArgsData data = SubActivity_Dispatcher.getArguments(getIntent());
+        SubActivityArgsData data = SubActivityArgsData.getArguments(getIntent());
         password.setText(data.getPassword());
     }
 }
