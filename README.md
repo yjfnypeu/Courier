@@ -31,4 +31,4 @@ dependencies {
 #对Params注解添加inherited属性。指定多层继承结构使用时。生成类是否继承父类参数
 ```
 
-具体使用姿势[csdn链接](http://blog.csdn.net/liu470368500/article/details/51142099)
+[具体使用姿势](./USAGE.md)

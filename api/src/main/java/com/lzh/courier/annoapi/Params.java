@@ -18,7 +18,7 @@ public @interface Params {
     Field[] fields() default {};
 
     /**
-     * indicated whether or not to generate params setter with subClass use @Params.default is true.<br>
+     * indicated whether or not to generate params setter with subClass use {@link Params}.default is true.<br>
      * - when set to false,subClass generated builder will be disable all of fields defined by parent class<br>
      *
      *     ps:this feature is not apply to activity

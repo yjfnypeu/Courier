@@ -1,6 +1,7 @@
 package org.lzh.framework.courier;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import org.lzh.framework.courier.model.User;
@@ -34,9 +35,6 @@ public class MainActivity extends Activity {
                 .requestCode(-1)
                 .start(this);
 
-        Bundle bundle = TestFragmentBuilder.create()
-                .setUsername("username")
-                .createBundle();
     }
 
     @OnClick(R.id.toMultiTypeActivity)
@@ -79,6 +77,9 @@ public class MainActivity extends Activity {
         SubFragment build = SubFragmentBuilder.create()
                 .setPassword("SubFragment pass : password")
                 .build();
+
+
+
         getFragmentManager().beginTransaction()
                 .replace(R.id.frag_layout,build)
                 .commit();

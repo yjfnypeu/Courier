@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.lzh.courier.annoapi.Params;
-// 只添加@Params实现空跳转
+// 只添加@Params,
 @Params
 public class EmptyActivity extends Activity {
     @Override
